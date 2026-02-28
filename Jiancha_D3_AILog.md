@@ -25,3 +25,10 @@
 - **Accepted:** All controllers, middleware, updated routes
 - **Rejected:** None
 - **Verification:** curl POST /api/auth/register returned 201, curl GET /api/cars returned 3 cars from DB
+
+## Entry 4 — Controllers and Routes
+- **Date:** 2026-02-28
+- **Prompt used:** "Implement Express controllers for auth (register/login), car listing, and booking with JWT middleware"
+- **Accepted:** All controllers, middleware, updated routes
+- **Rejected:** None
+- **Verification:** curl POST /api/auth/register returned 201, curl GET /api/cars returned 3 cars from DB
