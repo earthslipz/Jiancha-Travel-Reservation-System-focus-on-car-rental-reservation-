@@ -94,3 +94,19 @@
 - **Accepted:** .env with VITE_API_URL, updated api.js to use import.meta.env
 - **Rejected:** Hardcoded localhost (not accessible from browser in Codespace)
 - **Verification:** Network tab in browser confirmed requests going to correct Codespace URL
+
+## Entry 12 — Staff Dashboard + Reports
+- **Date:** 2026-02-28
+- **Tool:** GitHub Copilot
+- **Prompt used:** "Add staff dashboard to React + Express car rental app with GET /api/staff/dashboard and GET /api/staff/reports/reservations, protect with JWT role staff, add Staff Dashboard and Reports pages using shadcn/ui"
+- **Accepted:** staffRoutes.js, staffController.js, Staff/Dashboard.jsx, Staff/Reports.jsx, protected routes
+- **Rejected:** None
+- **Verification:** Seeded staff user via API, updated role in DB, logged in as staff, confirmed Staff link visible in Navbar, Dashboard shows stats, Reports shows all reservations
+
+## Entry 13 — Cancel Reservation
+- **Date:** 2026-02-28
+- **Tool:** GitHub Copilot
+- **Prompt used:** "Add cancel reservation feature with DELETE /api/bookings/:id, update status to cancelled, set car is_available back to TRUE"
+- **Accepted:** cancelBooking controller, DELETE route, Cancel button in Bookings.jsx
+- **Rejected:** None
+- **Verification:** Logged in as member, cancelled booking, confirmed status changed to cancelled and car became available again
