@@ -13,7 +13,7 @@ const getAllCars = async (req, res) => {
 // Add new car
 const addCar = async (req, res) => {
   try {
-    const { brand, model, type, license_plate, price_per_day, location } = req.body;
+    const { brand, model, type, license_plate, price_per_day, location, discount_percent, is_promotion } = req.body;
 
     // Validate required fields
     if (!brand || !model || !type || !license_plate || !price_per_day || !location) {
@@ -21,8 +21,8 @@ const addCar = async (req, res) => {
     }
 
     const [result] = await db.query(
-      'INSERT INTO cars (brand, model, type, license_plate, price_per_day, location, is_available) VALUES (?, ?, ?, ?, ?, ?, ?)',
-      [brand, model, type, license_plate, price_per_day, location, true]
+      'INSERT INTO cars (brand, model, type, license_plate, price_per_day, location, is_available, discount_percent, is_promotion) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)',
+      [brand, model, type, license_plate, price_per_day, location, true, discount_percent || 0, is_promotion || false]
     );
 
     res.status(201).json({
@@ -38,15 +38,15 @@ const addCar = async (req, res) => {
 const updateCar = async (req, res) => {
   try {
     const { id } = req.params;
-    const { brand, model, type, license_plate, price_per_day, location, is_available } = req.body;
+    const { brand, model, type, license_plate, price_per_day, location, is_available, discount_percent, is_promotion } = req.body;
 
     if (!brand || !model || !type || !license_plate || !price_per_day || !location) {
       return res.status(400).json({ message: 'Missing required fields' });
     }
 
     const [result] = await db.query(
-      'UPDATE cars SET brand = ?, model = ?, type = ?, license_plate = ?, price_per_day = ?, location = ?, is_available = ? WHERE id = ?',
-      [brand, model, type, license_plate, price_per_day, location, is_available !== undefined ? is_available : true, id]
+      'UPDATE cars SET brand = ?, model = ?, type = ?, license_plate = ?, price_per_day = ?, location = ?, is_available = ?, discount_percent = ?, is_promotion = ? WHERE id = ?',
+      [brand, model, type, license_plate, price_per_day, location, is_available !== undefined ? is_available : true, discount_percent || 0, is_promotion || false, id]
     );
 
     if (result.affectedRows === 0) {
@@ -86,4 +86,29 @@ const deleteCar = async (req, res) => {
   }
 };
 
-module.exports = { getAllCars, addCar, updateCar, deleteCar };
+const setPromotion = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { discount_percent, is_promotion } = req.body;
+
+    // Validate discount_percent
+    if (discount_percent < 0 || discount_percent > 100) {
+      return res.status(400).json({ message: 'Discount percent must be between 0 and 100' });
+    }
+
+    const [result] = await db.query(
+      'UPDATE cars SET discount_percent = ?, is_promotion = ? WHERE id = ?',
+      [discount_percent, is_promotion, id]
+    );
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ message: 'Car not found' });
+    }
+
+    res.json({ message: 'Promotion updated successfully' });
+  } catch (err) {
+    res.status(500).json({ message: 'Server error', error: err.message });
+  }
+};
+
+module.exports = { getAllCars, addCar, updateCar, deleteCar, setPromotion };

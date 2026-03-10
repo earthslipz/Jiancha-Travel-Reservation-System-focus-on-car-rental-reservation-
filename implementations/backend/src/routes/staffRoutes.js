@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const { authenticate } = require('../middleware/authMiddleware');
 const { getDashboard, getReservationReport, resetDatabase } = require('../controllers/staffController');
-const { getAllCars, addCar, updateCar, deleteCar } = require('../controllers/staffCarController');
+const { getAllCars, addCar, updateCar, deleteCar, setPromotion } = require('../controllers/staffCarController');
 
 // role-check middleware
 const authorizeRole = (role) => (req, res, next) => {
@@ -21,6 +21,7 @@ router.delete('/reset', authenticate, authorizeRole('staff'), resetDatabase);
 router.get('/cars', authenticate, authorizeRole('staff'), getAllCars);
 router.post('/cars', authenticate, authorizeRole('staff'), addCar);
 router.put('/cars/:id', authenticate, authorizeRole('staff'), updateCar);
+router.put('/cars/:id/promotion', authenticate, authorizeRole('staff'), setPromotion);
 router.delete('/cars/:id', authenticate, authorizeRole('staff'), deleteCar);
 
 module.exports = router;

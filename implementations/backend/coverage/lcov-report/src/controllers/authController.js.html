@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">19.35% </span>
+                <span class="strong">87.09% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>6/31</span>
+                <span class='fraction'>27/31</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">86.66% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/15</span>
+                <span class='fraction'>13/15</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/2</span>
+                <span class='fraction'>2/2</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">19.35% </span>
+                <span class="strong">87.09% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>6/31</span>
+                <span class='fraction'>27/31</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line low'></div>
+    <div class='status-line high'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -119,46 +119,46 @@
 <span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -169,47 +169,47 @@
 const jwt = require('jsonwebtoken');
 const db = require('../database/db');
 &nbsp;
-const register = <span class="fstat-no" title="function not covered" >as</span>ync (req, res) =&gt; {
-<span class="cstat-no" title="statement not covered" >  try {</span>
-    const { name, email, password } = <span class="cstat-no" title="statement not covered" >req.body;</span>
-<span class="cstat-no" title="statement not covered" >    if (!name || !email || !password)</span>
-<span class="cstat-no" title="statement not covered" >      return res.status(400).json({ message: 'All fields are required' });</span>
+const register = async (req, res) =&gt; {
+  try {
+    const { name, email, password } = req.body;
+    if (!name || !email || !password)
+      return res.status(400).json({ message: 'All fields are required' });
 &nbsp;
-    const [existing] = <span class="cstat-no" title="statement not covered" >await db.query('SELECT id FROM users WHERE email = ?', [email]);</span>
-<span class="cstat-no" title="statement not covered" >    if (existing.length &gt; 0)</span>
-<span class="cstat-no" title="statement not covered" >      return res.status(409).json({ message: 'Email already exists' });</span>
+    const [existing] = await db.query('SELECT id FROM users WHERE email = ?', [email]);
+    if (existing.length &gt; 0)
+      return res.status(409).json({ message: 'Email already exists' });
 &nbsp;
-    const hashed = <span class="cstat-no" title="statement not covered" >await bcrypt.hash(password, 10);</span>
-<span class="cstat-no" title="statement not covered" >    await db.query('INSERT INTO users (name, email, password) VALUES (?, ?, ?)', [name, email, hashed]);</span>
+    const hashed = await bcrypt.hash(password, 10);
+    await db.query('INSERT INTO users (name, email, password) VALUES (?, ?, ?)', [name, email, hashed]);
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    res.status(201).json({ message: 'Registered successfully' });</span>
+    res.status(201).json({ message: 'Registered successfully' });
   } catch (err) {
 <span class="cstat-no" title="statement not covered" >    res.status(500).json({ message: 'Server error', error: err.message });</span>
   }
 };
 &nbsp;
-const login = <span class="fstat-no" title="function not covered" >as</span>ync (req, res) =&gt; {
-<span class="cstat-no" title="statement not covered" >  try {</span>
-    const { email, password } = <span class="cstat-no" title="statement not covered" >req.body;</span>
-<span class="cstat-no" title="statement not covered" >    if (!email || !password)</span>
+const login = async (req, res) =&gt; {
+  try {
+    const { email, password } = req.body;
+    <span class="missing-if-branch" title="if path not taken" >I</span>if (!email || !password)
 <span class="cstat-no" title="statement not covered" >      return res.status(400).json({ message: 'All fields are required' });</span>
 &nbsp;
-    const [users] = <span class="cstat-no" title="statement not covered" >await db.query('SELECT * FROM users WHERE email = ?', [email]);</span>
-<span class="cstat-no" title="statement not covered" >    if (users.length === 0)</span>
+    const [users] = await db.query('SELECT * FROM users WHERE email = ?', [email]);
+    <span class="missing-if-branch" title="if path not taken" >I</span>if (users.length === 0)
 <span class="cstat-no" title="statement not covered" >      return res.status(401).json({ message: 'Invalid credentials' });</span>
 &nbsp;
-    const user = <span class="cstat-no" title="statement not covered" >users[0];</span>
-    const match = <span class="cstat-no" title="statement not covered" >await bcrypt.compare(password, user.password);</span>
-<span class="cstat-no" title="statement not covered" >    if (!match)</span>
-<span class="cstat-no" title="statement not covered" >      return res.status(401).json({ message: 'Invalid credentials' });</span>
+    const user = users[0];
+    const match = await bcrypt.compare(password, user.password);
+    if (!match)
+      return res.status(401).json({ message: 'Invalid credentials' });
 &nbsp;
-    const token = <span class="cstat-no" title="statement not covered" >jwt.sign(</span>
+    const token = jwt.sign(
       { id: user.id, role: user.role },
       process.env.JWT_SECRET,
       { expiresIn: '24h' }
     );
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    res.json({ token, user: { id: user.id, name: user.name, email: user.email, role: user.role } });</span>
+    res.json({ token, user: { id: user.id, name: user.name, email: user.email, role: user.role } });
   } catch (err) {
 <span class="cstat-no" title="statement not covered" >    res.status(500).json({ message: 'Server error', error: err.message });</span>
   }
@@ -223,7 +223,7 @@ module.exports = { register, login };
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-03-10T08:21:28.105Z
+                at 2026-03-10T11:42:51.098Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

@@ -27,6 +27,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from '../../components/ui/select'
+import { Checkbox } from '../../components/ui/checkbox'
+import { Badge } from '../../components/ui/badge'
 
 function CarManagement() {
   const [cars, setCars] = useState([])
@@ -36,6 +38,8 @@ function CarManagement() {
   const [openDialog, setOpenDialog] = useState(false)
   const [editingCar, setEditingCar] = useState(null)
   const [deleteConfirm, setDeleteConfirm] = useState(null)
+  const [promoDialog, setPromoDialog] = useState(null)
+  const [promoForm, setPromoForm] = useState({ discount_percent: 0, is_promotion: false })
   const [formData, setFormData] = useState({
     brand: '',
     model: '',
@@ -44,6 +48,8 @@ function CarManagement() {
     price_per_day: '',
     location: '',
     is_available: true,
+    discount_percent: 0,
+    is_promotion: false,
   })
 
   const fetchCars = async () => {
@@ -75,6 +81,8 @@ function CarManagement() {
         price_per_day: car.price_per_day,
         location: car.location,
         is_available: car.is_available,
+        discount_percent: car.discount_percent || 0,
+        is_promotion: car.is_promotion || false,
       })
     } else {
       setEditingCar(null)
@@ -86,6 +94,8 @@ function CarManagement() {
         price_per_day: '',
         location: '',
         is_available: true,
+        discount_percent: 0,
+        is_promotion: false,
       })
     }
     setOpenDialog(true)
@@ -101,7 +111,7 @@ function CarManagement() {
     const { name, value } = e.target
     setFormData({
       ...formData,
-      [name]: name === 'price_per_day' ? parseFloat(value) : value,
+      [name]: name === 'price_per_day' || name === 'discount_percent' ? parseFloat(value) : value,
     })
   }
 
@@ -111,6 +121,36 @@ function CarManagement() {
 
   const handleAvailabilityChange = (value) => {
     setFormData({ ...formData, is_available: value === 'true' })
+  }
+
+  const handlePromotionChange = (checked) => {
+    setFormData({ ...formData, is_promotion: checked })
+  }
+
+  const handleOpenPromoDialog = (car) => {
+    setPromoDialog(car)
+    setPromoForm({
+      discount_percent: car.discount_percent || 0,
+      is_promotion: car.is_promotion || false,
+    })
+  }
+
+  const handleClosePromoDialog = () => {
+    setPromoDialog(null)
+    setPromoForm({ discount_percent: 0, is_promotion: false })
+  }
+
+  const handleSetPromotion = async () => {
+    try {
+      await api.put(`/staff/cars/${promoDialog.id}/promotion`, promoForm)
+      setMessage('Promotion updated successfully')
+      setTimeout(() => {
+        handleClosePromoDialog()
+        fetchCars()
+      }, 1000)
+    } catch (err) {
+      setError(err.response?.data?.message || 'Failed to update promotion')
+    }
   }
 
   const handleSubmit = async (e) => {
@@ -262,6 +302,30 @@ function CarManagement() {
                   </div>
                 )}
 
+                <div className="flex items-center space-x-2">
+                  <Checkbox
+                    id="is_promotion"
+                    checked={formData.is_promotion}
+                    onCheckedChange={handlePromotionChange}
+                  />
+                  <label htmlFor="is_promotion" className="text-sm font-medium">
+                    Is Promotion
+                  </label>
+                </div>
+
+                {formData.is_promotion && (
+                  <Input
+                    name="discount_percent"
+                    type="number"
+                    placeholder="Discount % (0-100)"
+                    value={formData.discount_percent}
+                    onChange={handleInputChange}
+                    min="0"
+                    max="100"
+                    required
+                  />
+                )}
+
                 <DialogFooter>
                   <Button type="button" variant="outline" onClick={handleCloseDialog}>
                     Cancel
@@ -274,6 +338,52 @@ function CarManagement() {
             </DialogContent>
           </Dialog>
         </div>
+
+        {/* Promotion Dialog */}
+        <Dialog open={!!promoDialog} onOpenChange={handleClosePromoDialog}>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>
+                Set Promotion for {promoDialog?.brand} {promoDialog?.model}
+              </DialogTitle>
+              <DialogDescription>
+                Configure discount and promotion status for this car
+              </DialogDescription>
+            </DialogHeader>
+
+            <div className="space-y-4">
+              <div className="flex items-center space-x-2">
+                <Checkbox
+                  id="promo_active"
+                  checked={promoForm.is_promotion}
+                  onCheckedChange={(checked) => setPromoForm({ ...promoForm, is_promotion: checked })}
+                />
+                <label htmlFor="promo_active" className="text-sm font-medium">
+                  Active Promotion
+                </label>
+              </div>
+
+              <Input
+                type="number"
+                placeholder="Discount % (0-100)"
+                value={promoForm.discount_percent}
+                onChange={(e) => setPromoForm({ ...promoForm, discount_percent: parseInt(e.target.value) || 0 })}
+                min="0"
+                max="100"
+                disabled={!promoForm.is_promotion}
+              />
+            </div>
+
+            <DialogFooter>
+              <Button type="button" variant="outline" onClick={handleClosePromoDialog}>
+                Cancel
+              </Button>
+              <Button onClick={handleSetPromotion}>
+                Save Promotion
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
 
         {error && (
           <div className="mb-6 p-4 rounded-lg bg-destructive/10 border border-destructive text-destructive">
@@ -309,6 +419,7 @@ function CarManagement() {
                       <TableHead>License Plate</TableHead>
                       <TableHead>Location</TableHead>
                       <TableHead>Price/Day</TableHead>
+                      <TableHead>Promotion</TableHead>
                       <TableHead>Status</TableHead>
                       <TableHead>Action</TableHead>
                     </TableRow>
@@ -321,7 +432,27 @@ function CarManagement() {
                         <TableCell className="capitalize">{car.type}</TableCell>
                         <TableCell>{car.license_plate}</TableCell>
                         <TableCell>{car.location}</TableCell>
-                        <TableCell className="font-semibold">฿{car.price_per_day}</TableCell>
+                        <TableCell className="font-semibold">
+                          {car.is_promotion ? (
+                            <>
+                              <span className="line-through text-muted-foreground">฿{car.price_per_day}</span>
+                              <span className="text-green-600 font-bold ml-2">
+                                ฿{Math.round(car.price_per_day * (1 - car.discount_percent / 100))}
+                              </span>
+                            </>
+                          ) : (
+                            <>฿{car.price_per_day}</>
+                          )}
+                        </TableCell>
+                        <TableCell>
+                          {car.is_promotion ? (
+                            <Badge variant="secondary" className="bg-green-500 text-white">
+                              {car.discount_percent}% OFF
+                            </Badge>
+                          ) : (
+                            <span className="text-muted-foreground">None</span>
+                          )}
+                        </TableCell>
                         <TableCell>
                           <span
                             className={`px-3 py-1 rounded-full text-xs font-semibold ${
@@ -340,6 +471,13 @@ function CarManagement() {
                             onClick={() => handleOpenDialog(car)}
                           >
                             Edit
+                          </Button>
+                          <Button
+                            size="sm"
+                            variant="secondary"
+                            onClick={() => handleOpenPromoDialog(car)}
+                          >
+                            🏷️ Set Promo
                           </Button>
                           {deleteConfirm === car.id ? (
                             <div className="flex gap-2">

@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">26.31% </span>
+                <span class="strong">84.21% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>5/19</span>
+                <span class='fraction'>16/19</span>
             </div>
         
             
@@ -37,16 +37,16 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/3</span>
+                <span class='fraction'>3/3</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">26.31% </span>
+                <span class="strong">84.21% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>5/19</span>
+                <span class='fraction'>16/19</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line low'></div>
+    <div class='status-line high'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -118,33 +118,19 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -152,14 +138,28 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -168,16 +168,16 @@
 <span class="cline-any cline-yes">4x</span></td><td class="text"><pre class="prettyprint lang-js">const db = require('../database/db');
 &nbsp;
 // get overall stats for dashboard
-const getDashboard = <span class="fstat-no" title="function not covered" >as</span>ync (req, res) =&gt; {
-<span class="cstat-no" title="statement not covered" >  try {</span>
-    const [[bookingStats]] = <span class="cstat-no" title="statement not covered" >await db.query(</span>
+const getDashboard = async (req, res) =&gt; {
+  try {
+    const [[bookingStats]] = await db.query(
       'SELECT COUNT(*) AS totalBookings, COALESCE(SUM(total_price),0) AS totalRevenue FROM bookings'
     );
-    const [[carStats]] = <span class="cstat-no" title="statement not covered" >await db.query(</span>
+    const [[carStats]] = await db.query(
       'SELECT COUNT(*) AS availableCars FROM cars WHERE is_available = TRUE'
     );
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    res.json({</span>
+    res.json({
       totalBookings: bookingStats.totalBookings,
       totalRevenue: Number(bookingStats.totalRevenue),
       availableCars: carStats.availableCars,
@@ -188,29 +188,29 @@ const getDashboard = <span class="fstat-no" title="function not covered" >as</sp
 };
 &nbsp;
 // return full reservation list for reports
-const getReservationReport = <span class="fstat-no" title="function not covered" >as</span>ync (req, res) =&gt; {
-<span class="cstat-no" title="statement not covered" >  try {</span>
-    const [rows] = <span class="cstat-no" title="statement not covered" >await db.query(</span>
+const getReservationReport = async (req, res) =&gt; {
+  try {
+    const [rows] = await db.query(
       `SELECT b.*, u.name AS user_name, u.email AS user_email, c.brand, c.model, c.location
        FROM bookings b
        JOIN users u ON b.user_id = u.id
        JOIN cars c ON b.car_id = c.id`);
-<span class="cstat-no" title="statement not covered" >    res.json(rows);</span>
+    res.json(rows);
   } catch (err) {
 <span class="cstat-no" title="statement not covered" >    res.status(500).json({ message: 'Server error', error: err.message });</span>
   }
 };
 &nbsp;
 // reset database - delete all bookings and reset car availability
-const resetDatabase = <span class="fstat-no" title="function not covered" >as</span>ync (req, res) =&gt; {
-<span class="cstat-no" title="statement not covered" >  try {</span>
+const resetDatabase = async (req, res) =&gt; {
+  try {
     // Delete all bookings
-<span class="cstat-no" title="statement not covered" >    await db.query('DELETE FROM bookings');</span>
+    await db.query('DELETE FROM bookings');
     
     // Reset all cars to available
-<span class="cstat-no" title="statement not covered" >    await db.query('UPDATE cars SET is_available = TRUE');</span>
+    await db.query('UPDATE cars SET is_available = TRUE');
     
-<span class="cstat-no" title="statement not covered" >    res.json({ message: 'Database reset successfully' });</span>
+    res.json({ message: 'Database reset successfully' });
   } catch (err) {
 <span class="cstat-no" title="statement not covered" >    res.status(500).json({ message: 'Server error', error: err.message });</span>
   }
@@ -223,7 +223,7 @@ module.exports = { getDashboard, getReservationReport, resetDatabase };</pre></t
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-03-10T08:21:28.105Z
+                at 2026-03-10T11:42:51.098Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

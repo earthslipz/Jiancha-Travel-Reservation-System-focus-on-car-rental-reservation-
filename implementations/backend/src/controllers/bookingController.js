@@ -33,7 +33,9 @@ const createBooking = async (req, res) => {
     if (days > 30)
       return res.status(400).json({ message: 'Rental period cannot exceed 30 days. Contact admin for long-term rentals.' });
 
-    let total_price = days * car.price_per_day;
+    // Use discounted price if promotion is active
+    const price_per_day = car.is_promotion ? Math.round(car.price_per_day * (1 - car.discount_percent / 100)) : car.price_per_day;
+    let total_price = days * price_per_day;
 
     // Apply promo code discount if valid
     if (promo_code) {

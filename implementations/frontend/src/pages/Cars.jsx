@@ -8,6 +8,7 @@ import { Button } from '../components/ui/button'
 import { Input } from '../components/ui/input'
 import { Calendar } from '../components/ui/calendar'
 import { Popover, PopoverContent, PopoverTrigger } from '../components/ui/popover'
+import { Badge } from '../components/ui/badge'
 
 const VALID_PROMO_CODES = ['ONLYTRAVELNAJA', 'GUBONUS', 'MEGA'];
 const DISCOUNT_PERCENT = 30;
@@ -26,6 +27,7 @@ function Cars() {
   const [searchText, setSearchText] = useState('')
   const [filterType, setFilterType] = useState('all')
   const [filterLocation, setFilterLocation] = useState('all')
+  const [filterPromotion, setFilterPromotion] = useState(false)
   const [sortBy, setSortBy] = useState('default')
 
   useEffect(() => {
@@ -63,7 +65,10 @@ function Cars() {
       // Location filter
       const matchesLocation = filterLocation === 'all' || car.location === filterLocation
 
-      return matchesSearch && matchesType && matchesLocation
+      // Promotion filter
+      const matchesPromotion = !filterPromotion || car.is_promotion == 1 || car.is_promotion === true
+
+      return matchesSearch && matchesType && matchesLocation && matchesPromotion
     })
 
     // Sorting
@@ -74,7 +79,7 @@ function Cars() {
     }
 
     return result
-  }, [carsData, searchText, filterType, filterLocation, sortBy])
+  }, [carsData, searchText, filterType, filterLocation, filterPromotion, sortBy])
 
   const handlePromoChange = (code) => {
     setForm({ ...form, promo_code: code })
@@ -164,6 +169,14 @@ function Cars() {
                     {type === 'all' ? 'All' : type.toUpperCase()}
                   </Button>
                 ))}
+                <Button
+                  variant={filterPromotion ? 'default' : 'outline'}
+                  size="sm"
+                  onClick={() => setFilterPromotion(!filterPromotion)}
+                  className="capitalize"
+                >
+                  🏷️ Promotion
+                </Button>
               </div>
             </div>
 
@@ -217,22 +230,38 @@ function Cars() {
             filteredAndSortedCars.map(car => {
               const days = getDaysFromDates()
               const originalPrice = days > 0 ? days * car.price_per_day : 0
-              const discountedPrice = getDiscountedPrice(originalPrice)
-              const hasDiscount = discountedPrice < originalPrice
+              const discountedPrice = days > 0 ? days * car.discounted_price : 0
+              const hasDiscount = car.is_promotion && car.discounted_price < car.price_per_day
 
               return (
-                <Card key={car.id} className="overflow-hidden hover:border-primary transition">
+                <Card key={car.id} className={`overflow-hidden hover:border-primary transition ${car.is_promotion ? 'border-green-500 border-2' : ''}`}>
                   <div className="h-40 bg-muted flex items-center justify-center text-4xl">
                     🚗
                   </div>
                   <CardHeader>
-                    <CardTitle className="text-xl">{car.brand} {car.model}</CardTitle>
+                    <div className="flex justify-between items-start">
+                      <CardTitle className="text-xl">{car.brand} {car.model}</CardTitle>
+                      {car.is_promotion && (
+                        <Badge variant="secondary" className="bg-green-500 text-white">
+                          🏷️ SALE
+                        </Badge>
+                      )}
+                    </div>
                   </CardHeader>
                   <CardContent className="space-y-2">
                     <div className="text-sm space-y-1 text-muted-foreground">
                       <span className="block">Type: {car.type}</span>
                       <span className="block">Location: {car.location}</span>
-                      <span className="block font-semibold text-primary">฿{car.price_per_day}/day</span>
+                      <span className="block font-semibold text-primary">
+                        {hasDiscount ? (
+                          <>
+                            <span className="line-through text-muted-foreground">฿{car.price_per_day}</span>
+                            <span className="text-green-600 font-bold ml-2">฿{car.discounted_price}/day</span>
+                          </>
+                        ) : (
+                          <>฿{car.price_per_day}/day</>
+                        )}
+                      </span>
                     </div>
 
                     {selectedCar === car.id ? (
@@ -322,7 +351,14 @@ function Cars() {
                         {days > 0 && (
                           <div className="text-sm p-2 bg-muted rounded">
                             <span className="block text-muted-foreground">
-                              Total: ฿{originalPrice}{hasDiscount && ` → ฿${discountedPrice} (after discount)`}
+                              Total: {hasDiscount ? (
+                                <>
+                                  <span className="line-through">฿{originalPrice}</span>
+                                  <span className="text-green-600 font-bold ml-2">฿{discountedPrice}</span>
+                                </>
+                              ) : (
+                                <>฿{originalPrice}</>
+                              )}
                             </span>
                           </div>
                         )}

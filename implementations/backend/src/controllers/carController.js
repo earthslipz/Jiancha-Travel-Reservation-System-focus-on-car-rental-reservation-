@@ -10,7 +10,14 @@ const getAllCars = async (req, res) => {
     if (type) { query += ' AND type = ?'; params.push(type); }
 
     const [cars] = await db.query(query, params);
-    res.json(cars);
+    
+    // Add discounted_price to each car
+    const carsWithDiscount = cars.map(car => ({
+      ...car,
+      discounted_price: car.is_promotion ? Math.round(car.price_per_day * (1 - car.discount_percent / 100)) : car.price_per_day
+    }));
+    
+    res.json(carsWithDiscount);
   } catch (err) {
     res.status(500).json({ message: 'Server error', error: err.message });
   }
