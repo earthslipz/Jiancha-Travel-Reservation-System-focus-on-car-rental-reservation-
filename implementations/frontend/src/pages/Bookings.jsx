@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
+import toast from 'react-hot-toast'
 import api from '../services/api'
 import { Card, CardHeader, CardTitle, CardContent } from '../components/ui/card'
 import { Button } from '../components/ui/button'
@@ -14,18 +15,16 @@ import {
 
 function Bookings() {
   const [bookings, setBookings] = useState([])
-  const [message, setMessage] = useState('')
-  const [messagetype, setMessageType] = useState('')
   const [cancelingId, setCancelingId] = useState(null)
   const navigate = useNavigate()
+  const location = useLocation()
 
   const fetchBookings = async () => {
     try {
       const res = await api.get('/bookings')
       setBookings(res.data)
     } catch (err) {
-      setMessage('Failed to load bookings')
-      setMessageType('error')
+      toast.error('Failed to load bookings')
     }
   }
 
@@ -34,18 +33,25 @@ function Bookings() {
     fetchBookings()
   }, [navigate])
 
+  useEffect(() => {
+    // Show success message from navigation state
+    if (location.state?.message) {
+      toast.success(location.state.message)
+      // Clear the state to prevent showing again on refresh
+      navigate(location.pathname, { replace: true, state: {} })
+    }
+  }, [location, navigate])
+
   const handleCancelBooking = async (bookingId) => {
     if (!window.confirm('Are you sure you want to cancel this booking?')) return
 
     setCancelingId(bookingId)
     try {
       await api.delete(`/bookings/${bookingId}`)
-      setMessage('Booking cancelled successfully')
-      setMessageType('success')
+      toast.success('Booking cancelled successfully')
       fetchBookings()
     } catch (err) {
-      setMessage(err.response?.data?.message || 'Failed to cancel booking')
-      setMessageType('error')
+      toast.error(err.response?.data?.message || 'Failed to cancel booking')
     } finally {
       setCancelingId(null)
     }
@@ -79,12 +85,6 @@ function Bookings() {
       <div className="max-w-7xl mx-auto px-6 py-12">
         <h1 className="text-4xl font-bold mb-2">My Bookings</h1>
         <p className="text-muted-foreground mb-8">View and manage your car rental reservations</p>
-
-        {message && (
-          <div className={`mb-6 p-4 rounded-lg border ${messagetype === 'success' ? 'bg-green-500/10 border-green-500 text-green-500' : 'bg-destructive/10 border-destructive text-destructive'}`}>
-            {message}
-          </div>
-        )}
 
         {bookings.length === 0 ? (
           <Card>
@@ -127,10 +127,10 @@ function Bookings() {
                         {b.status === 'pending' && (
                           <Button
                             size="sm"
-                            className="mr-2 bg-green-600 hover:bg-green-700 text-white font-semibold px-4 py-2 rounded-lg"
+                            className="mr-2 bg-green-600 hover:bg-green-700 text-white font-semibold px-4 py-2 rounded-lg shadow-sm"
                             onClick={() => handlePayNow(b)}
                           >
-                            Pay Now
+                            💳 Pay Now
                           </Button>
                         )}
                         {(b.status === 'pending' || b.status === 'confirmed') && (

@@ -57,8 +57,13 @@ function PaymentSimulation() {
           navigate('/bookings', {
             state: { message: '✅ Payment successful! Booking confirmed.' }
           })
+          
+          // Show navbar notification
+          if (window.addNotification) {
+            window.addNotification('✅ Payment successful! Booking confirmed.', 'success')
+          }
         } else {
-          // Create new booking
+          // This shouldn't happen with the new flow, but keeping for compatibility
           await api.post('/bookings', {
             car_id: carId,
             pickup_date,
@@ -68,6 +73,11 @@ function PaymentSimulation() {
           navigate('/bookings', {
             state: { message: '✅ Booking confirmed! Payment successful.' }
           })
+          
+          // Show navbar notification
+          if (window.addNotification) {
+            window.addNotification('✅ Booking confirmed! Payment successful.', 'success')
+          }
         }
       } catch (err) {
         navigate('/bookings', {

@@ -1,6 +1,7 @@
 import { useState, useEffect, useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { format, parseISO, isPast, addDays, differenceInDays } from 'date-fns'
+import toast from 'react-hot-toast'
 import api from '../services/api'
 import { Card, CardHeader, CardTitle, CardContent } from '../components/ui/card'
 import { Button } from '../components/ui/button'
@@ -88,7 +89,7 @@ function Cars() {
     }
   }
 
-  const handleBook = (carId) => {
+  const handleBook = async (carId) => {
     if (!localStorage.getItem('token')) return navigate('/login')
     
     const days = getDaysFromDates()
@@ -97,22 +98,32 @@ function Cars() {
       return
     }
 
-    const car = carsData.find(c => c.id === carId)
-    const originalPrice = days * car.price_per_day
-    const totalPrice = getDiscountedPrice(originalPrice)
-
-    navigate('/payment', {
-      state: {
-        carId,
+    try {
+      await api.post('/bookings', {
+        car_id: carId,
         pickup_date: form.pickup_date,
         return_date: form.return_date,
-        promo_code: form.promo_code,
-        car,
-        days,
-        originalPrice,
-        discountedPrice: totalPrice
+        promo_code: form.promo_code || undefined
+      })
+      
+      toast.success('Booking added to cart! Go to Bookings to complete payment.', {
+        duration: 4000,
+        icon: '🛒'
+      })
+      
+      // Show navbar notification
+      if (window.addNotification) {
+        window.addNotification('🛒 Booking added to cart!', 'success')
       }
-    })
+      
+      // Reset form and close modal
+      setSelectedCar(null)
+      setForm({ pickup_date: '', return_date: '', promo_code: '' })
+      setPromoMessage('')
+      
+    } catch (err) {
+      toast.error(err.response?.data?.message || 'Failed to create booking')
+    }
   }
 
   // Get unique locations for filter dropdown
@@ -311,7 +322,7 @@ function Cars() {
                         {days > 0 && (
                           <div className="text-sm p-2 bg-muted rounded">
                             <span className="block text-muted-foreground">
-                              Total: ฿{originalPrice}{hasDiscount && ` → ฿${discountedPrice} after discount`}
+                              Total: ฿{originalPrice}{hasDiscount && ` → ฿${discountedPrice} (after discount)`}
                             </span>
                           </div>
                         )}
@@ -322,7 +333,7 @@ function Cars() {
                           onClick={() => handleBook(car.id)}
                           disabled={days <= 0 || days > 30}
                         >
-                          {days > 30 ? 'Exceeds 30 day limit' : 'Confirm Booking'}
+                          {days > 30 ? 'Exceeds 30 day limit' : 'Add to Cart'}
                         </Button>
                         <Button variant="outline" className="w-full" onClick={() => setSelectedCar(null)}>
                           Cancel

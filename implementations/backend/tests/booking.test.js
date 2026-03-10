@@ -5,7 +5,10 @@ const db = require('../src/database/db');
 let token;
 
 beforeAll(async () => {
+  // Clean up any existing test data first
+  await db.query('DELETE FROM bookings WHERE user_id = (SELECT id FROM users WHERE email = ?)', ['bookingtest@test.com']);
   await db.query('DELETE FROM users WHERE email = ?', ['bookingtest@test.com']);
+  
   await request(app)
     .post('/api/auth/register')
     .send({ name: 'Booking User', email: 'bookingtest@test.com', password: '123456' });
