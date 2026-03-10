@@ -132,3 +132,11 @@
 - **Tool:** Manual
 - **Action:** Merged dev branch into main, tagged release v1.0
 - **Verification:** GitHub Actions green on main branch, all features working end-to-end
+
+## Entry 19 — Fix All Tests
+- **Date:** 2026-03-10
+- **Tool:** GitHub Copilot
+- **Prompt used:** "Fix failing Jest tests for car, booking, staff endpoints after adding new features"
+- **Accepted:** Updated test files to cover new endpoints and fix 500 errors
+- **Rejected:** None
+- **Verification:** npm test — 35/35 tests passed, 79% statement coverage
